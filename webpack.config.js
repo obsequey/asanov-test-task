@@ -24,6 +24,26 @@ module.exports = {
         test: /\.js$/,
         loader: "babel-loader",
         exclude: /node_modules/
+      },
+      {
+        test: /\.(jpe?g|png|svg|gif)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              esModule: false,
+              outputPath: "img"
+            }
+          },
+          {
+            loader: "image-webpack-loader",
+            options: {
+              webp: {
+                quality: 75
+              }
+            }
+          }
+        ]
       }
     ]
   },
