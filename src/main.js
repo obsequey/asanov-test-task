@@ -1,4 +1,5 @@
 import "reset-css";
+import "./styles/fonts.scss";
 
 import Vue from "vue";
 import App from "./App.vue";

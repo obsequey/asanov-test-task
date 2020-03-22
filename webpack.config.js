@@ -1,5 +1,6 @@
 const path = require("path");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 
 module.exports = {
   entry: "./src/main.js",
@@ -8,7 +9,8 @@ module.exports = {
     filename: "bundle.js"
   },
   devServer: {
-    contentBase: path.resolve(__dirname, "public")
+    contentBase: path.resolve(__dirname, "public"),
+    quiet: true
   },
   module: {
     rules: [
@@ -18,7 +20,19 @@ module.exports = {
       },
       {
         test: /\.(scss|css)$/,
-        use: ["vue-style-loader", "css-loader", "sass-loader"]
+        use: [
+          "vue-style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              prependData: `
+                @import "styles/breakpoints.scss";
+                @import "styles/colors.scss";
+              `
+            }
+          }
+        ]
       },
       {
         test: /\.js$/,
@@ -60,9 +74,11 @@ module.exports = {
   },
   resolve: {
     alias: {
-      vue$: "vue/dist/vue.esm.js"
+      vue$: "vue/dist/vue.esm.js",
+      components: path.resolve(__dirname, "src/components/"),
+      styles: path.resolve(__dirname, "src/styles")
     },
     extensions: ["*", ".js", ".vue", ".json"]
   },
-  plugins: [new VueLoaderPlugin()]
+  plugins: [new VueLoaderPlugin(), new FriendlyErrorsWebpackPlugin()]
 };
