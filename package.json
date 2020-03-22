@@ -29,6 +29,7 @@
     "@babel/preset-env": "^7.9.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.4.2",
+    "friendly-errors-webpack-plugin": "^1.7.0",
     "image-webpack-loader": "^6.0.0",
     "node-sass": "^4.13.1",
     "reset-css": "^5.0.1",
@@ -41,6 +42,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "file-loader": "^6.0.0",
     "vue": "^2.6.11"
   }
