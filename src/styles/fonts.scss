@@ -1,13 +1,23 @@
 @font-face {
-  font-family: "Roboto Regular";
+  font-family: "Roboto";
   src: url("../fonts/Roboto-Regular.ttf") format("truetype");
+  font-weight: 300;
 }
 
 @font-face {
-  font-family: "Roboto Bold";
+  font-family: "Roboto";
   src: url("../fonts/Roboto-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Medium.ttf") format("truetype");
+  font-weight: 500;
 }
 
 html {
-  font-family: "Roboto Regular", sans-serif;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: $font-default;
 }

@@ -29,6 +29,7 @@ module.exports = {
               prependData: `
                 @import "styles/breakpoints.scss";
                 @import "styles/colors.scss";
+                @import "styles/font-sizes.scss";
               `
             }
           }
