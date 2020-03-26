@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <!-- :style="[modalIsOpened ? {'filter': 'blur(5px)'} : {'filter': 'none'}]" -->
     <div class="app__logo-container">
       <img
         src="./img/logo.png"
@@ -63,27 +64,31 @@
             </svg>
           </span>
         </div>
-        <card v-for="(card, i) in apiData" :key="i" :card="card" />
-        
+        <card v-for="(card, i) in apiData" :key="i" :card="card" v-on:cardIsClicked="showModal" />
       </main>
     </transition>
+    <modal-window v-if="modalIsOpened" :card="chosenCard" v-on:close-modal="modalIsOpened = false"/>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Card from "components/Card";
+import ModalWindow from 'components/ModalWindow.vue'
 
 export default {
   name: "App",
   components: {
-    Card
+    Card,
+    ModalWindow
   },
   data() {
     return {
       apiData: [],
       currentSearchValue: "",
-      isLoading: true
+      isLoading: true,
+      modalIsOpened: false,
+      chosenCard: null
     };
   },
   mounted() {
@@ -100,16 +105,13 @@ export default {
     // window.addEventListener("scroll", debounce);
   },
   methods: {
-    // debounce(func, wait) {
-    //   let timeout;
-    //   return function() {
-    //     later = () => {
-    //       func.apply(this, arguments);
-    //     };
-    //     clearTimeout(timeout);
-    //     timeout = setTimeout(later, wait);
-    //   };
-    // }
+    showModal(event) {
+      this.modalIsOpened = true
+      this.chosenCard = event
+    },
+    closeModal() {
+      this.modalIsOpened = false
+    }
   },
   watch: {
     apiData(newApiData) {
@@ -117,6 +119,13 @@ export default {
     },
     currentSearchValue() {
       localStorage.searchValue = this.currentSearchValue;
+    },
+    modalIsOpened() {
+      if (this.modalIsOpened) {
+        document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+      } else {
+        document.getElementsByTagName('body')[0].style.overflow = 'auto'
+      }
     }
   }
 };
@@ -135,6 +144,12 @@ export default {
 .app {
   background: $light-black;
   min-height: 100vh;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(12, 5vw);
+  grid-template-rows: 33.3vh auto;
+  column-gap: 2.22vw;
+  position: relative;
   &__logo-container {
     width: 100%;
     height: 33.3vh;
@@ -148,6 +163,7 @@ export default {
       height: 33.3vh;
       overflow: hidden;
       width: 100%;
+      left: 0;
     }
     img {
       align-self: center;
@@ -163,6 +179,8 @@ export default {
   &__loading-icon {
     display: block;
     margin: 21vh auto 0 auto;
+    grid-row: 2;
+    grid-column: 6/8;
     rect {
       margin: 0 auto;
       display: block;
@@ -186,13 +204,14 @@ export default {
     }
   }
   &__content {
-    justify-content: center;
+    grid-column: 3/11;
+    grid-row: 2;
     display: grid;
-    grid-template-columns: repeat(12, 5%);
-    column-gap: 2.22%;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2.22vw;
     &__search {
       height: 56px;
-      grid-column: 3/11;
+      grid-column: 1/3;
       margin: 80px 0;
       position: relative;
       border-bottom: 1px $grey solid;

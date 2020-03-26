@@ -1,5 +1,5 @@
 <template>
-  <div v-on:click="showModal" class="card">
+  <div v-on:click="$emit('cardIsClicked', card)" class="card">
     <div class="card__image" :style="{ backgroundColor: this.randomColor }">
       <span class="card__image__letter">{{ firstLetter }}</span>
     </div>
@@ -9,44 +9,22 @@
       <p v-else class="card__species">{{ species }}</p>
     </transition>
   </div>
-  <modal-card v-if="modalIsOpened"/>
 </template>
 
 <script>
 import axios from 'axios'
-import ModalCard from 'components/ModalCard.vue'
+import iconMethods from 'mixins/icon'
 
 export default {
-  name: "Card",
-  components: {
-    ModalCard
-  },
+  mixins: [iconMethods],
+  name: "card",
   props: [
     'card'
   ],
   data() {
     return {
       species: null,
-      isLoading: true,
-      moduleIsOpened: false
-    }
-  },
-  computed: {
-    firstLetter() {
-      return this.card.name.slice(0,1)
-    },
-    randomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    },
-  },
-  methods: {
-    showModal() {
-      this.moduleIsOpened = true
+      isLoading: true
     }
   },
   mounted() {
@@ -96,6 +74,7 @@ export default {
     color: $white;
     font-size: $font-larger;
     margin-bottom: 9px;
+    font-weight: 700;
   }
   &__species {
     color: $grey;
@@ -106,10 +85,10 @@ export default {
     box-shadow: $shadow-hover;
   }
   &:nth-of-type(2n) {
-    grid-column: 1/7;
+    grid-column: 1;
   }
   &:nth-of-type(2n+1) {
-    grid-column: 7/13;
+    grid-column: 2;
   }
 }
 </style>
